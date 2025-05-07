@@ -2,7 +2,7 @@ import math
 
 # a function to calculate a weigh matrix for a list of sequences
 # the start (inclusive) and end(exclusive) are 0-indexed positions from
-#   in each sequence to include
+#   in each sequence to include. If you set the end to -1, it will go to the end
 # the sequences should be aligned already
 # the output is a list of tuples. Each element of the outer list corresponds
 #   to a sequence position, the inner tuple is the weigh values for A, G, T, and C
@@ -16,7 +16,9 @@ DEFAULT_BACKGROUND = {"A": 0.25, "G": 0.25, "T": 0.25, "C": 0.25}
 test_sequences = ['ACGTACGA', 'ACGTACGT', 'ACGTCCGT', 'ACGTCCAT', 
                   'ACAGGCAT', 'ACAGGCTT', 'ACAGTCTT', 'ACAGTCTT']
 
-def weigh_matrix(sequences, start, end, background = DEFAULT_BACKGROUND):
+def weigh_matrix(sequences, start = 0, end = -1, background = DEFAULT_BACKGROUND):
+    if end == -1:
+        end = len(sequences[0])
     nucleotide_table = []
     for _ in range(start, end):
         nucleotide_table += [{"A": 0, "G": 0, "T": 0, "C": 0}]
@@ -31,7 +33,9 @@ def weigh_matrix(sequences, start, end, background = DEFAULT_BACKGROUND):
     return result
 
 
-def relative_individual_information(target, sequences, start, end, background = DEFAULT_BACKGROUND):
+def relative_individual_information(target, sequences, start = 0, end = -1, background = DEFAULT_BACKGROUND):
+    if end == -1:
+        end = len(sequences[0])
     wm = weigh_matrix(sequences, start, end, background)
     result = 0
     for i in range(0, end-start):
